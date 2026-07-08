@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>音声播放器</title>
+    <style>
+        body {
+            text-align: center;
+            margin-top: 100px;
+            background: #f5f5f5;
+        }
+        .audio-btn {
+            padding: 12px 24px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #639;
+            color: white;
+            cursor: pointer;
+        }
+        .audio-btn:hover {
+            background: #84a;
+        }
+    </style>
+</head>
+<body>
+    <h2>音声合集</h2>
+
+    <!-- 音频1，标签完整闭合 -->
+    <button class="audio-btn" onclick="playAudio('audio1')">音声1</button>
+    <audio id="audio1" src="sound1.mp3">
+
+    <!-- 音频2 -->
+    <button class="audio-btn" onclick="playAudio('audio2')">音声2</button>
+    <audio id="audio2" src="sound2.mp3">
+
+    <!-- JS放在所有元素最后，不会找不到标签 -->
+    <script>
+        let currentAudio = null;
+        function playAudio(id) {
+            const audio = document.getElementById(id);
+            // 捕获播放失败报错，兼容浏览器播放限制
+            if (!audio) {
+                console.log("找不到音频文件：" + id);
+                return;
+            }
+            // 停止上一段音频
+            if(currentAudio && currentAudio !== audio){
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            if(audio.paused){
+                audio.play().catch(err=>{
+                    console.log("播放失败：",err);
+                    alert("点击页面任意位置后再点按钮！");
+                });
+                currentAudio = audio;
+            }else{
+                audio.pause();
+                currentAudio = null;
+            }
+        }
+    </script>
+</body>
+</html>
